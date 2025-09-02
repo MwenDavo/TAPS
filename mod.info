@@ -1,0 +1,6 @@
+{
+    "name": "TAPS Sensor",
+    "version": "1.0",
+    "dependencies": ["tech_sensors"],
+    "tags": ["sensor"]
+}

@@ -1,0 +1,7 @@
+{
+    "name": "TAPS Sensor",
+    "author": "David",
+    "description": "Traffic Accident Prevention System",
+    "version": "1.0",
+    "type": "sensor"
+}
