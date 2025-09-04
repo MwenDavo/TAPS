@@ -12,7 +12,7 @@ local readings = {}
 local readingIndex = 1
 local latestReading = {}
 
-local function init(data)
+local function init(data) --Receives configuration from GE layer and initializes the sensor
     log('I', logTag, 'TAPS sensor initialized.')
 
     sensorId = data.sensorId
@@ -25,29 +25,34 @@ local function init(data)
 
 end
 
-local function update()
+local function update(dtSim) --Called once per simulation step. Computes readings like position, time, and sensor-specific outputs
     if physicsTimer < physicsUpdateTime then
     physicsTimer = physicsTimer + dtSim
     return
   end
   physicsTimer = physicsTimer - physicsUpdateTime
 
-
+  --TODO Implementar logica del sensor (obtener vehiculos cercanos, obtener data)
 end
 
-local function reset()
+local function reset() --Clears current readings after they’ve been polled
+  --TODO
 end
 
-local function getSensorData()
+local function getSensorData() --Returns the full list of readings for the current graphics-step
+  --TODO
 end
 
-local function getLatest()
+local function getLatest() --Returns the most recent reading (used for ad-hoc polling)
+  --TODO
 end
 
-local function setIsVisualised()
+local function setIsVisualised(value) --Enables or disables visualization in the simulation
+  --TODO
 end
 
-local function incrementTimer()
+local function incrementTimer(dtSim) --Tracks time since last poll, used to control update frequency
+  --TODO
 end
 
 M.init                                                  = init
