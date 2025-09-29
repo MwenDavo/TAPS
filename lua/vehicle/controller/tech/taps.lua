@@ -28,7 +28,7 @@ local function update(dtSim) --Called once per simulation step. Computes reading
   readings[readingIndex] = latestReading
   readingIndex = readingIndex + 1
 
-  extensions.taps.cacheLatestReading(sensorId,latestReading)
+  extensions.TAPS.cacheLatestReading(sensorId,latestReading)
   --TODO Implementar logica del sensor (obtener vehiculos cercanos, obtener data)
 end
 

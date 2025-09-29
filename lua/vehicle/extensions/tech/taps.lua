@@ -35,7 +35,7 @@ local function create(data) --Instantiates the sensor and connects it to the con
 
     TAPSs[decodedData.sensorId] = {
         data = controllerData,
-        controller = controller.loadControllerExternal('tech/taps', 'TAPS' .. decodedData.sensorId, controllerData)
+        controller = controller.loadControllerExternal('tech/TAPS', 'TAPS' .. decodedData.sensorId, controllerData)
     }
 end
 
