@@ -1,5 +1,7 @@
 local M = {}
 
+M.dependencies = { "tech_sensors" }
+
 TAPSLastRawReadings = {}
 
 local function createTAPS(vid, args) --Attaches sensor to a vehicle and sends creation data to VLua side
@@ -46,7 +48,7 @@ local function createTAPS(vid, args) --Attaches sensor to a vehicle and sends cr
   return sensorId
 end
 
-local function removeTAPS()
+local function removeTAPS(vid)
     local vehicleId = scenetree.findObject(vid):getID()
     be:queueObjectLua(vehicleId, "extensions.tech_TAPS.remove(" .. sensorId .. ")")
     TAPSLastRawReadings[sensorId] = nil
@@ -106,7 +108,7 @@ end
 
 M.createTAPS                    = createTAPS
 M.removeTAPS                    = removeTAPS
-M.getTAPSReading                = getTAPSReading
+M.getTAPSReadings               = getTAPSReadings
 M.updateTAPSLastReadings        = updateTAPSLastReadings
 M.updateTAPSAdHocRequest        = updateTAPSAdHocRequest
 M.setTAPSUpdateTime             = setTAPSUpdateTime

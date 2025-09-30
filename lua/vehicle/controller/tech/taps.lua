@@ -15,20 +15,20 @@ local readingIndex = 1
 local latestReading = {}
 
 local function update(dtSim) --Called once per simulation step. Computes readings like position, time, and sensor-specific outputs
-    if physicsTimer < physicsUpdateTime then
+  if physicsTimer < physicsUpdateTime then
     physicsTimer = physicsTimer + dtSim
     return
   end
   physicsTimer = physicsTimer - physicsUpdateTime
 
-  for i = 0, be:getObjectCount() - 1 do
-    local vehicle = be:getObject(i)
-    latestReadings[i] = vehicle
+  --for i = 0, be:getObjectCount() - 1 do
+  --  local vehicle = be:getObject(i)
+  --  latestReadings[i] = vehicle
+  --end
+  --readings[readingIndex] = latestReading
+  --readingIndex = readingIndex + 1
 
-  readings[readingIndex] = latestReading
-  readingIndex = readingIndex + 1
-
-  extensions.TAPS.cacheLatestReading(sensorId,latestReading)
+  extensions.tech_TAPS.cacheLatestReading(sensorId,"Test")
   --TODO Implementar logica del sensor (obtener vehiculos cercanos, obtener data)
 end
 
@@ -46,8 +46,6 @@ local function init(data) --Receives configuration from GE layer and initializes
     physicsUpdateTime = data.physicsUpdateTime
 
 end
-
-
 
 local function reset() --Clears current readings after they’ve been polled
   readings = {}

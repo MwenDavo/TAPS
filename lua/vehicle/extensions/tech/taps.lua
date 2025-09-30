@@ -3,7 +3,7 @@ local M = {}
 local TAPSs = {}
 local latestReadings = {}
 
-local function updateTAPSGFXStep(dtsim, sensorId, isAdHocRequest, adHocRequestId)
+local function updateTAPSGFXStep(dtSim, sensorId, isAdHocRequest, adHocRequestId)
     local controller = TAPSs[sensorId].controller
     local data = controller.getSensorData()
 
@@ -73,7 +73,7 @@ end
 
 local function updateGFX(dtSim) --Called every frame to push sensor data to GE Lua for collection
     for sensorId, _ in pairs(TAPSs) do
-        updateTAPSGFXStep(dtsim, sensorId, false, nil)
+        updateTAPSGFXStep(dtSim, sensorId, false, nil)
     end
 end
 

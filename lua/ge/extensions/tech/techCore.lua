@@ -1,5 +1,7 @@
 local M = {}
 
+M.dependencies = { "tech_techCore" }
+
 local TAPSs = {}
 
 local function onSerialize()
