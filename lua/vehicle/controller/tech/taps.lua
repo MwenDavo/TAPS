@@ -25,10 +25,12 @@ local function update(dtSim) --Called once per simulation step. Computes reading
   --  local vehicle = be:getObject(i)
   --  latestReadings[i] = vehicle
   --end
-  --readings[readingIndex] = latestReading
-  --readingIndex = readingIndex + 1
+  latestReadings = {}
+  latestReadings[0] = 0
+  readings[readingIndex] = latestReading
+  readingIndex = readingIndex + 1
 
-  extensions.tech_TAPS.cacheLatestReading(sensorId,"Test")
+  extensions.tech_TAPS.cacheLatestReading(sensorId, latestReadings)
   --TODO Implementar logica del sensor (obtener vehiculos cercanos, obtener data)
 end
 
