@@ -3,16 +3,21 @@ local M = {}
 local logTag = 'TAPS'
 
 local sensorId
+local vehicleId
+
+local GPSId
+local RADARId
+
 local GFXUpdateTime
 local timeSinceLastPoll = 0.0
-local isVisualised = true
+local isVisualised = false
 
 local physicsTimer
 local physicsUpdateTime
 
 local readings = {}
 local readingIndex = 1
-local latestReading = {}
+local latestReading
 
 local function update(dtSim) --Called once per simulation step. Computes readings like position, time, and sensor-specific outputs
   if physicsTimer < physicsUpdateTime then
@@ -25,27 +30,28 @@ local function update(dtSim) --Called once per simulation step. Computes reading
   --  local vehicle = be:getObject(i)
   --  latestReadings[i] = vehicle
   --end
-  latestReadings = {}
-  latestReadings[0] = 0
+  latestReading = { position = extensions.tech_GPS.getLatest(GPSId), velocity = obj:getVelocity(), nearby = extensions.tech_idealRADARSensor.getLatest(RADARId) }
   readings[readingIndex] = latestReading
   readingIndex = readingIndex + 1
 
-  extensions.tech_TAPS.cacheLatestReading(sensorId, latestReadings)
-  --TODO Implementar logica del sensor (obtener vehiculos cercanos, obtener data)
+  extensions.tech_TAPS.cacheLatestReading(sensorId, latestReading)
 end
 
 local function init(data) --Receives configuration from GE layer and initializes the sensor
-    log('I', logTag, 'TAPS sensor initialized.')
+  log('I', logTag, 'TAPS sensor initialized.')
 
-    sensorId = data.sensorId
-    GFXUpdateTime = data.GFXUpdateTime
-    timeSinceLastPoll = 0.0
-    isVisualised = data.isVisualised
+  sensorId = data.sensorId
+  vehicleId = data.vehicleId
+  GPSId = data.GPSId
+  RADARId = data.RADARId
+  GFXUpdateTime = data.GFXUpdateTime
+  timeSinceLastPoll = 0.0
+  isVisualised = data.isVisualised
 
-    readings = {}
-    readingIndex = 1
-    physicsTimer = 0.0
-    physicsUpdateTime = data.physicsUpdateTime
+  readings = {}
+  readingIndex = 1
+  physicsTimer = 0.0
+  physicsUpdateTime = data.physicsUpdateTime
 
 end
 
@@ -57,6 +63,9 @@ end
 
 local function getSensorData() --Returns the full list of readings for the current graphics-step
   return {
+    vehicleId = vehicleId,
+    GPSId = GPSId,
+    RADARId = RADARId,
     isVisualised = isVisualised,
     GFXUpdateTime = GFXUpdateTime,
     timeSinceLastPoll = timeSinceLastPoll,

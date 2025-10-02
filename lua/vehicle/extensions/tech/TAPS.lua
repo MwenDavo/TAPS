@@ -7,17 +7,21 @@ local function updateTAPSGFXStep(dtSim, sensorId, isAdHocRequest, adHocRequestId
     local controller = TAPSs[sensorId].controller
     local data = controller.getSensorData()
 
-    local rawReadingsData = {sensorId = sensorId, reading = data.rawReadings}
-    obj:queueGameEngineLua(string.format("tech_sensors.updateTAPSLastReadings(%q)", lpack.encode(rawReadingsData)))
-
     if not isAdHocRequest and data.timeSinceLastPoll < data.GFXUpdateTime then
         controller.incrementTimer(dtSim)
         return
     end
+
+    --if data.isVisualised == true then
+    --    obj.debugDrawProxy:drawSphere(0.05, data.pos, color(0, 255, 0, 255))
+    --end
+
+    local rawReadingsData = {sensorId = sensorId, reading = data.rawReadings}
+    obj:queueGameEngineLua(string.format("tech_TAPS.updateTAPSLastReadings(%q)", lpack.encode(rawReadingsData)))
     
     if isAdHocRequest then
         local adHocData = {requestId = adHocRequestId, reading = data.rawReadings}
-        obj:queueGameEngineLua(string.format("tech_sensors.updateTAPSAdHocRequest(%q)", lpack.encode(adHocData)))
+        obj:queueGameEngineLua(string.format("tech_TAPS.updateTAPSAdHocRequest(%q)", lpack.encode(adHocData)))
     end
 
     controller.reset()
@@ -27,10 +31,13 @@ local function create(data) --Instantiates the sensor and connects it to the con
     local decodedData = lpack.decode(data)
     local controllerData = {
         sensorId = decodedData.sensorId,
+        vehicleId = decodedData.vehicleId,
         GFXUpdateTime = decodedData.GFXUpdateTime,
-        isVisualised = isVisualised,
+        isVisualised = decodedData.isVisualised,
         timeSinceLastPoll = decodedData.timeSinceLastPoll,
-        physicsUpdateTime = decodedData.physicsUpdateTime
+        physicsUpdateTime = decodedData.physicsUpdateTime,
+        GPSId = decodedData.GPSId,
+        RADARId = decodedData.RADARId,
     }
 
     TAPSs[decodedData.sensorId] = {
@@ -79,11 +86,11 @@ end
 
 local function onVehicleDestroyed(vid) --Cleans up all sensors if the vehicle is removed from the world.
     for sensorId, _ in pairs(TAPSs) do
-    if vid == objectId then
-      remove(sensorId)
-      TAPSs[sensorId] = nil
+        if vid == objectId then
+          remove(sensorId)
+          TAPSs[sensorId] = nil
+        end
     end
-  end
 end
 
 M.create                                                  = create

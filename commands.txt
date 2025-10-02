@@ -1,0 +1,4 @@
+extensions.load("tech/TAPS")
+vid = be:getPlayerVehicleID(0)
+sid = tech_TAPS.createTAPS(vid,{})
+data = tech_TAPS.getTAPSReadings(sid)
