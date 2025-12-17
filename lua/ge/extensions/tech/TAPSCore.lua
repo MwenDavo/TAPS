@@ -1,56 +1,54 @@
 local M = {}
 
-M.dependencies = { "tech_techCore" }
-
 local TAPSs = {}
 
-local function onSerialize()
-    local data = {}
-    data.tcomParams = tcomParams
-    data.quitRequested = quitRequested
-    data.cameras = cameras
-    data.lidars = lidars
-    data.ultrasonics = ultrasonics
-    data.radars = radars
-    data.advancedIMUs = advancedIMUs
-    data.GPSs = GPSs
-    data.powertrains = powertrains
-    data.meshes = meshes
-    data.idealRADARs = idealRADARs
-    data.roadsSensors = roadsSensors
-    data.vehicleFeeders = vehicleFeeders
-    data.TAPSs = TAPSs
-
-    if server ~= nil then
-      local _, serverSocket = next(server)
-      _, data.runningPort = serverSocket:getsockname()
-    end
-
-    data.showServerGUI = showServerGUI
-    return data
-end
-
-local function onDeserialized(data)
-    tcomParams = data.tcomParams
-    quitRequested = data.quitRequested
-    cameras = data.cameras
-    lidars = data.lidars
-    ultrasonics = data.ultrasonics
-    radars = data.radars
-    advancedIMUs = data.advancedIMUs
-    GPSs = data.GPSs
-    powertrains = data.powertrains
-    meshes = data.meshes
-    idealRADARs = data.idealRADARs
-    roadsSensors = data.roadsSensors
-    vehicleFeeders = data.vehicleFeeders
-    TAPSs = data.TAPSs
-
-    if data.runningPort ~= nil then
-      M.openServer(data.runningPort)
-    end
-    showServerGUI = data.showServerGUI
-end
+-- local function onSerialize()
+--     local data = {}
+--     data.tcomParams = tcomParams
+--     data.quitRequested = quitRequested
+--     data.cameras = cameras
+--     data.lidars = lidars
+--     data.ultrasonics = ultrasonics
+--     data.radars = radars
+--     data.advancedIMUs = advancedIMUs
+--     data.GPSs = GPSs
+--     data.powertrains = powertrains
+--     data.meshes = meshes
+--     data.idealRADARs = idealRADARs
+--     data.roadsSensors = roadsSensors
+--     data.vehicleFeeders = vehicleFeeders
+--     data.TAPSs = TAPSs
+-- 
+--     if server ~= nil then
+--       local _, serverSocket = next(server)
+--       _, data.runningPort = serverSocket:getsockname()
+--     end
+-- 
+--     data.showServerGUI = showServerGUI
+--     return data
+-- end
+-- 
+-- local function onDeserialized(data)
+--     tcomParams = data.tcomParams
+--     quitRequested = data.quitRequested
+--     cameras = data.cameras
+--     lidars = data.lidars
+--     ultrasonics = data.ultrasonics
+--     radars = data.radars
+--     advancedIMUs = data.advancedIMUs
+--     GPSs = data.GPSs
+--     powertrains = data.powertrains
+--     meshes = data.meshes
+--     idealRADARs = data.idealRADARs
+--     roadsSensors = data.roadsSensors
+--     vehicleFeeders = data.vehicleFeeders
+--     TAPSs = data.TAPSs
+-- 
+--     if data.runningPort ~= nil then
+--       M.openServer(data.runningPort)
+--     end
+--     showServerGUI = data.showServerGUI
+-- end
 
 local function handleOpenTAPS(request)
     if not ResearchVerifier.isTechLicenseVerified() then
@@ -137,8 +135,6 @@ local function handleSetTAPSIsVisualized(request)
     request:sendACK('CompletedSetTAPSIsVisualised')
 end
 
-M.onSerialize                               = onSerialize
-M.onDeserialized                            = onDeserialized
 M.handleOpenTAPS                            = handleOpenTAPS
 M.handleGetTAPSId                           = handleGetTAPSId
 M.handleCloseTAPS                           = handleCloseTAPS
@@ -147,6 +143,6 @@ M.handleSendAdHocRequestTAPS                = handleSendAdHocRequestTAPS
 M.handleIsAdHocPollRequestReadyTAPS         = handleIsAdHocPollRequestReadyTAPS
 M.handleCollectAdHocPollRequestTAPS         = handleCollectAdHocPollRequestTAPS
 M.handleSetTAPSRequestUpdateTime            = handleSetTAPSRequestedUpdateTime
-M.handleSetTAPSIsVisualized                 = handleSetTAPSIsVisualized             
+M.handleSetTAPSIsVisualized                 = handleSetTAPSIsVisualized
 
 return M

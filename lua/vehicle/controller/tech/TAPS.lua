@@ -30,7 +30,7 @@ local function update(dtSim) --Called once per simulation step. Computes reading
   --  local vehicle = be:getObject(i)
   --  latestReadings[i] = vehicle
   --end
-  latestReading = { position = extensions.tech_GPS.getLatest(GPSId), velocity = obj:getVelocity(), nearby = extensions.tech_idealRADARSensor.getLatest(RADARId) }
+  latestReading = { vehicleId = vehicleId, position = obj:getPosition(), velocity = obj:getVelocity(), time = obj:getSimTime(), nearby = extensions.tech_idealRADARSensor.getLatest(RADARId) }
   readings[readingIndex] = latestReading
   readingIndex = readingIndex + 1
 

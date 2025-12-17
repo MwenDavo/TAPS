@@ -4,15 +4,25 @@ M.dependencies = { "tech_sensors" }
 
 TAPSLastRawReadings = {}
 
-local function printTable(table)
-    for k,v in pairs(table) do
+local function printOwn(data)
+    log('D','TAPS-Vehicle',"VID = "..tostring(data.vehicleId))
+    log('D','TAPS-Vehicle',"Position = "..tostring(data.position))
+    log('D','TAPS-Vehicle',"Velocity = "..tostring(data.velocity))
+    log('D','TAPS-Vehicle',"Sensor Time = ".. tostring(data.time))
+end
+
+local function printNearby(nearby)
+    for k,v in pairs(nearby) do
         if type(v) == "table" then
-            log('D','TAPS',k .." = Table printing below")
-            printTable(v)
-        else
-            log('D','TAPS',k .." = ".. tostring(v))
+            log('D','TAPS-RADAR-'..k,
+            "VID = " .. v.vehicleID ..
+            " Position = " .. tostring(vec3(v.positionB.x,v.positionB.y,v.positionB.z)) ..
+            " Distance = " .. v.distToPlayerVehicleSq ..
+            " Velocity = " .. tostring(vec3(v.velBB.x,v.velBB.y,v.velBB.z))
+            )            
         end
     end
+    log('D','TAPS-RADAR-time',"RADAR Time = ".. tostring(nearby.time))
 end
 
 local function createTAPS(vid, args) --Attaches sensor to a vehicle and sends creation data to VLua side
@@ -80,12 +90,9 @@ local function getTAPSReadings(sensorId) --Used by TechCore to retrieve readings
     end
     TAPSLastRawReadings[sensorId] = {}
 
-    nearby = outData[#outData].nearby
-    position = outData[#outData].position
-    log('D','TAPS-Nearby',"Nearby Values")
-    printTable(nearby)
-    log('D','TAPS-Position',"Position Values")
-    printTable(position)
+    
+    -- printNearby(outData[#outData].nearby)
+    -- printOwn(outData[#outData])
 
     return outData
 end
